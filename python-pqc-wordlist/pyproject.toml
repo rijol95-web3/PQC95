@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pqc-wordlist"
+version = "1.0.1"
+description = "PQC Foundation English wordlist standard with 4096 words and SHA3-512 integrity hash."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "PQC Foundation" }]
+keywords = ["pqc", "post-quantum", "wordlist", "mnemonic", "sha3-512", "argon2id", "ml-dsa-65"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Security :: Cryptography",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+[project.urls]
+Homepage = "https://github.com/rijol95-web3/pqc-foundation"
+Repository = "https://github.com/rijol95-web3/pqc-foundation"
+Issues = "https://github.com/rijol95-web3/pqc-foundation/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools.package-data]
+pqc_wordlist = ["pqc_wordlist.txt"]
