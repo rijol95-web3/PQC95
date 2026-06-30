@@ -18,6 +18,3 @@ PQC English Wordlist Standard
 </p>
 
 
-<p align="center">
-  <img src="./assets/pqc-animation.svg" alt="PQC Animation" />
-</p>
