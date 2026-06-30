@@ -16,4 +16,3 @@ PQC English Wordlist Standard
 <p align="center">
   <img src="./assets/world-clock.svg" alt="Live World Clock" />
 </p>
-
