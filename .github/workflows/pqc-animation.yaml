@@ -1,4 +1,4 @@
-name: Generate PQC Animation
+name: Generate PQC Transaction Animation
 
 on:
   schedule:
@@ -15,14 +15,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Generate PQC animated SVG
+      - name: Generate animated PQC transaction SVG
         run: |
           mkdir -p assets
 
-          cat > assets/pqc-animation.svg << 'SVG'
-          <svg width="1200" height="360" viewBox="0 0 1200 360" xmlns="http://www.w3.org/2000/svg">
+          cat > assets/pqc-transaction.svg << 'SVG'
+          <svg width="1200" height="420" viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="pqcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stop-color="#a855f7"/>
                 <stop offset="50%" stop-color="#22d3ee"/>
                 <stop offset="100%" stop-color="#39ff14"/>
@@ -37,98 +37,165 @@ jobs:
               </filter>
 
               <style>
-                .bg { fill: #050816; }
+                .bg { fill:#050816; }
                 .frame {
-                  fill: rgba(15,23,42,0.75);
-                  stroke: url(#pqcGrad);
-                  stroke-width: 2;
+                  fill:rgba(15,23,42,.75);
+                  stroke:url(#grad);
+                  stroke-width:2;
                 }
                 .title {
-                  font-family: Arial, sans-serif;
-                  font-size: 92px;
-                  font-weight: 900;
-                  letter-spacing: 14px;
-                  fill: url(#pqcGrad);
-                  filter: url(#glow);
+                  font-family:Arial, sans-serif;
+                  font-size:42px;
+                  font-weight:900;
+                  letter-spacing:6px;
+                  fill:url(#grad);
+                  filter:url(#glow);
                 }
-                .subtitle {
-                  font-family: monospace;
-                  font-size: 22px;
-                  letter-spacing: 6px;
-                  fill: #94a3b8;
+                .label {
+                  font-family:monospace;
+                  font-size:18px;
+                  fill:#94a3b8;
                 }
-                .text {
-                  font-family: monospace;
-                  font-size: 18px;
-                  fill: #e2e8f0;
+                .addr {
+                  font-family:monospace;
+                  font-size:17px;
+                  fill:#e2e8f0;
                 }
-                .neon {
-                  stroke: url(#pqcGrad);
-                  stroke-width: 3;
-                  fill: none;
-                  filter: url(#glow);
-                  stroke-dasharray: 25 15;
-                  animation: flow 2.5s linear infinite;
+                .amount {
+                  font-family:monospace;
+                  font-size:28px;
+                  font-weight:800;
+                  fill:#39ff14;
+                  filter:url(#glow);
                 }
-                .orbit {
-                  stroke: #22d3ee;
-                  stroke-width: 1.5;
-                  fill: none;
-                  opacity: .75;
-                  filter: url(#glow);
-                  animation: pulse 2s ease-in-out infinite;
+                .txid {
+                  font-family:monospace;
+                  font-size:16px;
+                  fill:#22d3ee;
                 }
-                .particle {
-                  fill: #a855f7;
-                  filter: url(#glow);
-                  animation: blink 1.4s ease-in-out infinite;
+                .box {
+                  fill:rgba(15,23,42,.95);
+                  stroke:#22d3ee;
+                  stroke-width:1.5;
+                  filter:url(#glow);
                 }
-                .secure {
-                  fill: #39ff14;
-                  filter: url(#glow);
-                  animation: blink 2s ease-in-out infinite;
+                .receiver {
+                  stroke:#39ff14;
+                }
+                .sender {
+                  stroke:#a855f7;
+                }
+                .line {
+                  stroke:url(#grad);
+                  stroke-width:5;
+                  stroke-linecap:round;
+                  filter:url(#glow);
+                  stroke-dasharray:20 18;
+                  animation: flow 1.2s linear infinite;
+                }
+                .coin {
+                  fill:#39ff14;
+                  filter:url(#glow);
+                  animation: moveCoin 4s ease-in-out infinite;
+                }
+                .coinText {
+                  font-family:Arial, sans-serif;
+                  font-size:20px;
+                  font-weight:900;
+                  fill:#050816;
+                  animation: moveCoin 4s ease-in-out infinite;
+                }
+                .statusPending {
+                  font-family:monospace;
+                  font-size:18px;
+                  fill:#facc15;
+                  animation: pending 4s linear infinite;
+                }
+                .statusConfirmed {
+                  font-family:monospace;
+                  font-size:18px;
+                  fill:#39ff14;
+                  filter:url(#glow);
+                  animation: confirmed 4s linear infinite;
+                }
+                .check {
+                  fill:#39ff14;
+                  filter:url(#glow);
+                  opacity:0;
+                  animation: showCheck 4s linear infinite;
                 }
 
                 @keyframes flow {
-                  from { stroke-dashoffset: 0; }
-                  to { stroke-dashoffset: -80; }
+                  from { stroke-dashoffset:0; }
+                  to { stroke-dashoffset:-76; }
                 }
 
-                @keyframes blink {
-                  0%,100% { opacity: .35; }
-                  50% { opacity: 1; }
+                @keyframes moveCoin {
+                  0% { transform:translate(0px,0px); opacity:0; }
+                  12% { opacity:1; }
+                  50% { transform:translate(350px,0px); opacity:1; }
+                  78% { transform:translate(700px,0px); opacity:1; }
+                  100% { transform:translate(700px,0px); opacity:0; }
                 }
 
-                @keyframes pulse {
-                  0%,100% { opacity: .35; transform: scale(1); }
-                  50% { opacity: 1; transform: scale(1.04); }
+                @keyframes pending {
+                  0%,55% { opacity:1; }
+                  65%,100% { opacity:0; }
+                }
+
+                @keyframes confirmed {
+                  0%,60% { opacity:0; }
+                  72%,100% { opacity:1; }
+                }
+
+                @keyframes showCheck {
+                  0%,63% { opacity:0; transform:scale(.8); }
+                  75%,100% { opacity:1; transform:scale(1); }
                 }
               </style>
             </defs>
 
-            <rect class="bg" width="1200" height="360" rx="26"/>
-            <rect class="frame" x="20" y="20" width="1160" height="320" rx="24"/>
+            <rect class="bg" width="1200" height="420" rx="26"/>
+            <rect class="frame" x="20" y="20" width="1160" height="380" rx="24"/>
 
-            <text x="600" y="115" text-anchor="middle" class="title">PQC</text>
-            <text x="600" y="160" text-anchor="middle" class="subtitle">POST QUANTUM CRYPTOGRAPHY</text>
+            <text x="600" y="72" text-anchor="middle" class="title">PQC TRANSACTION</text>
+            <text x="600" y="105" text-anchor="middle" class="label">POST-QUANTUM VALUE TRANSFER</text>
 
-            <path class="neon" d="M90 245 C230 150, 360 310, 500 220 S760 130, 910 230 S1070 275, 1120 190"/>
-            <path class="neon" d="M90 190 C240 285, 370 115, 520 205 S770 310, 930 175 S1060 120, 1120 235"/>
+            <!-- Sender -->
+            <rect x="65" y="145" width="330" height="170" rx="20" class="box sender"/>
+            <text x="230" y="183" text-anchor="middle" class="label">SENDER ADDRESS</text>
+            <text x="230" y="224" text-anchor="middle" class="addr">pqc_7f8a3c91...b42e19d0</text>
+            <text x="230" y="270" text-anchor="middle" class="amount">- 125.50 PQC</text>
 
-            <circle cx="600" cy="220" r="52" class="orbit"/>
-            <ellipse cx="600" cy="220" rx="135" ry="38" class="orbit" transform="rotate(24 600 220)"/>
-            <ellipse cx="600" cy="220" rx="135" ry="38" class="orbit" transform="rotate(-24 600 220)"/>
+            <!-- Receiver -->
+            <rect x="805" y="145" width="330" height="170" rx="20" class="box receiver"/>
+            <text x="970" y="183" text-anchor="middle" class="label">RECEIVER ADDRESS</text>
+            <text x="970" y="224" text-anchor="middle" class="addr">pqc_a92d6e40...91c77f21</text>
+            <text x="970" y="270" text-anchor="middle" class="amount">+ 125.50 PQC</text>
 
-            <circle cx="600" cy="220" r="13" class="secure"/>
-            <circle cx="420" cy="205" r="7" class="particle"/>
-            <circle cx="780" cy="210" r="7" class="particle"/>
-            <circle cx="250" cy="235" r="6" class="particle"/>
-            <circle cx="965" cy="205" r="6" class="particle"/>
+            <!-- Transfer line -->
+            <line x1="420" y1="230" x2="780" y2="230" class="line"/>
 
-            <text x="170" y="300" class="text">ML-DSA-65</text>
-            <text x="430" y="300" class="text">SHA3-512</text>
-            <text x="700" y="300" class="text">QPoW-512</text>
-            <text x="940" y="300" class="text">pqc_ ADDRESS</text>
+            <!-- Moving coin -->
+            <g transform="translate(420 230)">
+              <circle cx="0" cy="0" r="31" class="coin"/>
+              <text x="0" y="7" text-anchor="middle" class="coinText">PQC</text>
+            </g>
+
+            <!-- Confirmation check -->
+            <g transform="translate(1048 286)" class="check">
+              <circle cx="0" cy="0" r="22"/>
+              <path d="M-10 0 L-2 9 L13 -9" stroke="#050816" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+
+            <!-- TX details -->
+            <rect x="230" y="335" width="740" height="44" rx="14" fill="rgba(2,6,23,.9)" stroke="#22d3ee"/>
+            <text x="600" y="363" text-anchor="middle" class="txid">
+              TXID: 8f3c2a91d7e4b6c0aa49f21e9d3c8b50f6a7e14c91b2d0f8a61c93e7d44ab921
+            </text>
+
+            <text x="600" y="132" text-anchor="middle" class="statusPending">STATUS: BROADCASTING TRANSACTION...</text>
+            <text x="600" y="132" text-anchor="middle" class="statusConfirmed">STATUS: CONFIRMED ✅ RECEIVER ACCEPTED</text>
           </svg>
           SVG
 
@@ -136,6 +203,6 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add assets/pqc-animation.svg
-          git commit -m "Generate PQC animation" || exit 0
+          git add assets/pqc-transaction.svg
+          git commit -m "Generate PQC transaction animation" || exit 0
           git push
